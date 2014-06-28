@@ -1,6 +1,6 @@
-# UnionFind
+# UnionFind (IN PROGRESS)
 
-In progress
+TODO Description
 
 ## Installation
 
