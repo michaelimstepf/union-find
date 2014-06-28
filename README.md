@@ -1,6 +1,6 @@
-# UnionFind
+# UnionFind (IN PROGRESS)
 
-TODO: Write a gem description
+TODO Description
 
 ## Installation
 
