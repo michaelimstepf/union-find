@@ -33,20 +33,27 @@ class UnionFind
     raise ArgumentError, 'number of components is < 1' if number_of_components < 1
     
     @number_of_components = number_of_components
-    
+    @number_of_unconnected_components = number_of_components
+
     @parent = [] # parent of i
-    @subtree_rank = [] # rank of subtree rooted at i (cannot be more than 31)
+    @tree_size = [] # rank of subtree rooted at i (cannot be more than 31)
     number_of_components.times do |i|
       @parent[i] = i
-      @subtree_rank[i] = 0
+      @tree_size[i] = 0
     end
   end
 
   # Returns the number of components.
   # @return [Interger] the number of components
-  def count
+  def count_nodes
     @number_of_components
   end
+
+  # Returns the number of unconnected components.
+  # @return [Interger] the number of unconnected components
+  def count_unconnected_nodes
+    @number_of_unconnected_components
+  end  
 
   # Returns the root of a component.
   # @param component_id [Integer] the integer representing one component
@@ -71,8 +78,26 @@ class UnionFind
     find_root(component_1_id) == find_root(component_2_id)
   end
 
+  # Connect root of component 1 with root of component 2 by
+  # attaching smaller subtree root node with larger tree
+  # @param component_1_id [Integer] the integer representing one component
+  # @param component_2_id [Integer] the integer representing the other component   
+  def connect(component_1_id, component_2_id)
+    root_component_1 = find_root(component_1_id)
+    root_component_2 = find_root(component_2_id)
 
+    return if root_component_1 == root_component_2
 
+    # make smaller root point to larger one
+    if @tree_size(root_component_1) < @tree_size(root_component_2)
+      @parent[root_component_1] = root_component_2
+      @tree_size[root_component_2] += @tree_size[root_component_1]
+    else
+      @parent[root_component_2] = root_component_1
+      @tree_size[root_component_1] += @tree_size[root_component_2]
+    end
+    
+    @number_of_unconnected_components -= 1
 end
 
 end
