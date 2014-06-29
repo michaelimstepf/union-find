@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = UnionFind::VERSION
   spec.authors       = ["Michael Imstepf"]
   spec.email         = ["michael.imstepf@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = %q{Weighted quick-union algorithm with path compression.}
+  spec.description   = %q{Union Find is an algorithm that uses a disjoint-set data structure. It allows us to efficiently connect any items of a given list and to efficiently check whether two items of this list are connected (any degree of separation) or not.}
+  spec.homepage      = "https://github.com/michaelimstepf/union-find"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
