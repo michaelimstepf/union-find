@@ -12,3 +12,12 @@ RSpec.configure do |config|
   config.filter_run focus: true
   config.run_all_when_everything_filtered = true  
 end
+
+def create_family_tree(union_find)
+  union_find.connect('Grandfather', 'Father')
+  union_find.connect('Grandfather', 'Mother')
+  union_find.connect('Mother', 'Son')
+  union_find.connect('Father', 'Daughter')
+
+  union_find
+end
