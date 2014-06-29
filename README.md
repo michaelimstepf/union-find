@@ -9,14 +9,12 @@ Possible applications where we might want to find out whether two items are conn
 * Transistors in a computer chip
 * Pixels in a digital photo
 * Metallic sites in a composite system
-* Percolation
-* Kruskal's minimum spanning tree algorithm
 
 Click [here](https://www.cs.princeton.edu/~rs/AlgsDS07/01UnionFind.pdf) for more information.
 
 The running time of this algorithm is linear.
 
-This a Ruby implementation of [Robert Sedgewick](http://www.cs.princeton.edu/~rs/)'s and [Kevin Wayne](http://www.cs.princeton.edu/~wayne/contact/)'s weighted quick-union algorithm with path compression)[http://algs4.cs.princeton.edu/15uf/UF.java.html]. Credit goes to these two authors of the book [Algorithms](http://www.amazon.com/gp/product/032157351X/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&tag=algs4-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=032157351X) and to the many computer scientists that have contributed to this algorithm in the past decades.
+This a Ruby implementation of [Robert Sedgewick](http://www.cs.princeton.edu/~rs/)'s and [Kevin Wayne](http://www.cs.princeton.edu/~wayne/contact/)'s [weighted quick-union algorithm with path compression](http://algs4.cs.princeton.edu/15uf/UF.java.html). Credit goes to these two authors of the book [Algorithms](http://www.amazon.com/gp/product/032157351X/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&tag=algs4-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=032157351X) and to the many computer scientists that have contributed to this algorithm in the past decades.
 
 ## Installation
 
@@ -36,26 +34,34 @@ Or install it yourself as:
 
 1. Create a new instance of 'UnionFind' and pass in an array of items:
 
-    union_find = UnionFind::UnionFind.new(['Grandfather', 'Father', 'Daughter', 'Single Person'])
+```ruby
+union_find = UnionFind::UnionFind.new(['Grandfather', 'Father', 'Daughter', 'Single Person'])
+```
 
 2. Connect items (in any order):
 
-    union_find.union('Grandfather', 'Father')
-    union_find.union('Father', 'Daughter')
+```ruby
+union_find.union('Grandfather', 'Father')
+union_find.union('Father', 'Daughter')
+```
 
 3. Check whether to items are connected (in any order):
 
-    union_find.connected?('Grandfather', 'Daughter')
-    => true
-    union_find.connected?('Daughter', 'Father')
-    => true
-    union_find.connected?('Grandfather', 'Single Person')
-    => false
+```ruby
+union_find.connected?('Grandfather', 'Daughter')
+=> true
+union_find.connected?('Daughter', 'Father')
+=> true
+union_find.connected?('Grandfather', 'Single Person')
+=> false
+```
 
 4. Check how many isolated items there are. In this example, there are 2, namely the family the family tree (Grandfather - Father - Daugther) and the Single Person:
 
-    union_find.count_isolated_components
-    => 2
+```ruby
+union_find.count_isolated_components
+=> 2
+```
 
 ## Contributing
 
