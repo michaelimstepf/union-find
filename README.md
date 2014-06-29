@@ -12,8 +12,6 @@ Possible applications where we might want to find out whether two items are conn
 
 Click [here](https://www.cs.princeton.edu/~rs/AlgsDS07/01UnionFind.pdf) for more information.
 
-Worst case (upper bound) running time of this algorithm is linear or, in mathematical terms, O(n). This means that any increase of items results in a proportional increase of processing time of the methods listed below.
-
 This a Ruby implementation of [Robert Sedgewick](http://www.cs.princeton.edu/~rs/)'s and [Kevin Wayne](http://www.cs.princeton.edu/~wayne/contact/)'s [weighted quick-union algorithm with path compression](http://algs4.cs.princeton.edu/15uf/UF.java.html). Credit goes to these two authors of the book [Algorithms](http://www.amazon.com/gp/product/032157351X/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&tag=algs4-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=032157351X) and to the many computer scientists that have contributed to this algorithm in the past decades.
 
 ## Installation
@@ -62,6 +60,12 @@ Check how many isolated items there are. In this example, there are 2, namely th
 union_find.count_isolated_components
 => 2
 ```
+
+## Performance
+
+Initializing a data structure takes linear time: O(n).
+Afterwards, the `union()`, `find()`, and `connected?()` operations take logarithmic time in the worst case: O(log n).
+The `count_isolated_components()` operation takes constant time: O(1).
 
 ## Contributing
 

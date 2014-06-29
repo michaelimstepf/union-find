@@ -12,7 +12,7 @@ module UnionFind
 # This implementation uses weighted quick union by rank with path compression
 # by halving.
 
-# Initializing a data structure with number_of_components sites takes linear time.
+# Initializing a data structure takes linear time.
 # Afterwards, the union, find, and connected 
 # operations take logarithmic time (in the worst case) and the
 # count operation takes constant time.
