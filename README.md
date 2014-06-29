@@ -32,14 +32,11 @@ Or install it yourself as:
 
 ## Usage
 
-1. Create a new instance of 'UnionFind' and pass in an array of items:
-
+1. Create a new instance of `UnionFind` and pass in an array of items:
 ```ruby
 union_find = UnionFind::UnionFind.new(['Grandfather', 'Father', 'Daughter', 'Single Person'])
 ```
-
 2. Connect items (in any order):
-
 ```ruby
 union_find.union('Grandfather', 'Father')
 union_find.union('Father', 'Daughter')
