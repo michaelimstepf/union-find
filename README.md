@@ -63,9 +63,11 @@ union_find.count_isolated_components
 
 ## Performance
 
-Initializing a data structure takes linear time: O(n).
+Initializing a data structure takes linear time: θ(n).
+
 Afterwards, the `union()`, `find()`, and `connected?()` operations take logarithmic time in the worst case: O(log n).
-The `count_isolated_components()` operation takes constant time: O(1).
+
+The `count_isolated_components()` operation takes constant time: θ(1).
 
 ## Contributing
 
