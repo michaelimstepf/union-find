@@ -32,17 +32,20 @@ Or install it yourself as:
 
 ## Usage
 
-1. Create a new instance of `UnionFind` and pass in an array of items:
+Create a new instance of `UnionFind` and pass in an array of items:
+
 ```ruby
 union_find = UnionFind::UnionFind.new(['Grandfather', 'Father', 'Daughter', 'Single Person'])
 ```
-2. Connect items (in any order):
+
+Connect items (in any order):
+
 ```ruby
 union_find.union('Grandfather', 'Father')
 union_find.union('Father', 'Daughter')
 ```
 
-3. Check whether to items are connected (in any order):
+Check whether to items are connected (in any order):
 
 ```ruby
 union_find.connected?('Grandfather', 'Daughter')
@@ -53,7 +56,7 @@ union_find.connected?('Grandfather', 'Single Person')
 => false
 ```
 
-4. Check how many isolated items there are. In this example, there are 2, namely the family the family tree (Grandfather - Father - Daugther) and the Single Person:
+Check how many isolated items there are. In this example, there are 2, namely the family the family tree (Grandfather - Father - Daugther) and the Single Person:
 
 ```ruby
 union_find.count_isolated_components
