@@ -1,6 +1,5 @@
-ENV['RAILS_ENV'] ||= 'test'
 require 'union_find'
-require 'pry'
+require 'pry' # to use binding.pry
 
 RSpec.configure do |config|  
   # Run specs in random order to surface order dependencies. If you find an

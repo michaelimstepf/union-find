@@ -27,19 +27,20 @@ class UnionFind
   # Initializes an empty union-find data structure with
   # n isolated components 0 through n-1.
   # @param components [Array] components
-  # @return [Array] components
-  # @raise [ArgumentError] if components.length < 1
+  # @raise [ArgumentError] if components.length < 1 or if components is not an Array
   def initialize(components)
+    raise ArgumentError, 'input is not an Array' unless components.class == Array   
+    
     @number_of_components = components.length
-    @number_of_unconnected_components = @number_of_components    
+    @number_of_unconnected_components = @number_of_components 
 
-    raise ArgumentError, 'number of components is < 1' if @number_of_components < 1  
+    raise ArgumentError, 'number of components is < 1' if components.length < 1         
 
-    @parent = [] # parent of i
-    @tree_size = [] # size of tree rooted at i (cannot be more than 31)
+    @parent = {} # parent of i
+    @tree_size = {} # size of tree rooted at i (cannot be more than 31)
     components.each do |component|
-      @parent[i] = i
-      @tree_size[i] = 0
+      @parent[component] = component
+      @tree_size[component] = 0
     end
   end
 
@@ -58,30 +59,30 @@ class UnionFind
   # Returns the root of a component.
   # @param component_id [Integer] the integer representing one component
   # @return [Integer] the component_id of the root of a component
-  # @raise [IndexError] unless 0 <= p < N (first component has index 0)
-  def find_root(component_id)
-    raise IndexError if (component_id < 0 || component_id >= @parent.length)
+  # @raise [IndexError] unless component exists
+  def find_root(component)
+    raise IndexError unless @parent[component]
     
-    while component_id != @parent[component_id] # stop at the top node where component id == parent id
-      @parent[component_id] = @parent[@parent[component_id]] # path compression by halving
-      component_id = @parent[component_id]
+    while component != @parent[component] # stop at the top node where component id == parent id
+      @parent[component] = @parent[@parent[component]] # path compression by halving
+      component = @parent[component]
     end
 
-    return component_id
+    return component
   end
 
   # Connect root of component 1 with root of component 2
   # by attaching smaller subtree root node with larger tree.
   # @param component_1_id [Integer] the integer representing one component
   # @param component_2_id [Integer] the integer representing the other component   
-  def connect(component_1_id, component_2_id)
-    root_component_1 = find_root(component_1_id)
-    root_component_2 = find_root(component_2_id)
+  def connect(component_1, component_2)
+    root_component_1 = find_root(component_1)
+    root_component_2 = find_root(component_2)
 
     return if root_component_1 == root_component_2
 
     # make smaller root point to larger one
-    if @tree_size(root_component_1) < @tree_size(root_component_2)
+    if @tree_size[root_component_1] < @tree_size[root_component_2]
       @parent[root_component_1] = root_component_2
       @tree_size[root_component_2] += @tree_size[root_component_1]
     else
@@ -93,11 +94,11 @@ class UnionFind
   end  
 
   # Do two components share the same root?
-  # @param component_1_id [Integer] the integer representing one component
-  # @param component_2_id [Integer] the integer representing the other component     
+  # @param component_1 [Integer] the integer representing one component
+  # @param component_2 [Integer] the integer representing the other component     
   # @return [Boolean]
-  def connected?(component_1_id, component_2_id)
-    find_root(component_1_id) == find_root(component_2_id)
+  def connected?(component_1, component_2)
+    find_root(component_1) == find_root(component_2)
   end
 
 

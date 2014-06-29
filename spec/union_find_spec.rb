@@ -3,18 +3,42 @@ random = Random.new
 
 describe UnionFind::UnionFind do
 
-  describe '#initialize' do
-    context 'when number_of_components < 0' do
+  describe '#initialize' do    
+    context 'when no components are provided' do
       it 'raises an exception' do
-        expect {UnionFind::UnionFind.new(-2)}.to raise_exception(ArgumentError)
+        expect {UnionFind::UnionFind.new()}.to raise_exception(ArgumentError)
       end            
     end
-    
-    context 'when number_of_components == 0' do
+
+    context 'when components in form other than Array are provided' do
       it 'raises an exception' do
-        expect {UnionFind::UnionFind.new(0)}.to raise_exception(ArgumentError)
+        expect {UnionFind::UnionFind.new('Michael Jackson')}.to raise_exception(ArgumentError)
       end            
-    end   
+    end
+
+    context 'when components are provided as Array' do
+      it 'returns number of components' do
+        expect(UnionFind::UnionFind.new(['Michael Jackson', 'Kurt Cobain'])).to eq 2
+      end            
+    end           
+  end
+
+  describe '#connect' do
+    singers = ['Michael Jackson', 'Kurt Cobain', 'Prince']
+    union_find = UnionFind::UnionFind.new(singers)
+
+    context 'when one component gets connected to itself' do
+      it 'returns the component' do
+        expect(union_find.connect('Prince', 'Prince')).to eq 'Prince'
+      end
+    end
+  end
+
+=begin
+
+  describe '#connect' do
+
+
   end
 
   describe '#count_components' do
@@ -74,5 +98,6 @@ describe UnionFind::UnionFind do
         expect(union_find.connected?(component_1_id, component_1_id)).to be_truthy
       end
     end    
-  end  
+  end
+=end  
 end  
