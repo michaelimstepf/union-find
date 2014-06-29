@@ -45,7 +45,7 @@ union_find.union('Grandfather', 'Father')
 union_find.union('Father', 'Daughter')
 ```
 
-Check whether to items are connected (in any order):
+Check whether two items are connected (in any order):
 
 ```ruby
 union_find.connected?('Grandfather', 'Daughter')
