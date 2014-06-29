@@ -1,6 +1,6 @@
 # Weighted quick-union algorithm with path compression
 
-Union Find is an algorithm that uses a disjoint-set data structure to solve the following problem. Given a list of items, we can connect these items and at any point, and we can check whether two items are connected (directly or indirectly) or not.
+Union Find is an algorithm that uses a disjoint-set data structure. It allows us to connect any items of a given list and to check whether two items of this list are connected (any degree of separation) or not.
 
 Possible applications where we might want to find out whether two items are connected to each other are:
 * Social networks
