@@ -26,18 +26,18 @@ class UnionFind
 
   # Initializes an empty union-find data structure with
   # n isolated components 0 through n-1.
-  # @param number_of_components [Integer] the number of components
-  # @return [Integer] the number of components
-  # @raise [ArgumentError] if number_of_components < 1
-  def initialize(number_of_components)
-    raise ArgumentError, 'number of components is < 1' if number_of_components < 1
-    
-    @number_of_components = number_of_components
-    @number_of_unconnected_components = number_of_components
+  # @param components [Array] components
+  # @return [Array] components
+  # @raise [ArgumentError] if components.length < 1
+  def initialize(components)
+    @number_of_components = components.length
+    @number_of_unconnected_components = @number_of_components    
+
+    raise ArgumentError, 'number of components is < 1' if @number_of_components < 1  
 
     @parent = [] # parent of i
-    @tree_size = [] # rank of subtree rooted at i (cannot be more than 31)
-    number_of_components.times do |i|
+    @tree_size = [] # size of tree rooted at i (cannot be more than 31)
+    components.each do |component|
       @parent[i] = i
       @tree_size[i] = 0
     end
@@ -45,13 +45,13 @@ class UnionFind
 
   # Returns the number of components.
   # @return [Interger] the number of components
-  def count_nodes
+  def count_components
     @number_of_components
   end
 
   # Returns the number of unconnected components.
   # @return [Interger] the number of unconnected components
-  def count_unconnected_nodes
+  def count_unconnected_components
     @number_of_unconnected_components
   end  
 
@@ -70,16 +70,8 @@ class UnionFind
     return component_id
   end
 
-  # Do two components share the same root?
-  # @param component_1_id [Integer] the integer representing one component
-  # @param component_2_id [Integer] the integer representing the other component     
-  # @return [Boolean]
-  def connected?(component_1_id, component_2_id)
-    find_root(component_1_id) == find_root(component_2_id)
-  end
-
-  # Connect root of component 1 with root of component 2 by
-  # attaching smaller subtree root node with larger tree
+  # Connect root of component 1 with root of component 2
+  # by attaching smaller subtree root node with larger tree.
   # @param component_1_id [Integer] the integer representing one component
   # @param component_2_id [Integer] the integer representing the other component   
   def connect(component_1_id, component_2_id)
@@ -98,6 +90,19 @@ class UnionFind
     end
     
     @number_of_unconnected_components -= 1
+  end  
+
+  # Do two components share the same root?
+  # @param component_1_id [Integer] the integer representing one component
+  # @param component_2_id [Integer] the integer representing the other component     
+  # @return [Boolean]
+  def connected?(component_1_id, component_2_id)
+    find_root(component_1_id) == find_root(component_2_id)
+  end
+
+
+
+
 end
 
 end

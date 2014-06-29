@@ -17,8 +17,8 @@ describe UnionFind::UnionFind do
     end   
   end
 
-  describe '#count' do
-    context 'when number_of_components > 0' do
+  describe '#count_components' do
+    context 'when all components are connected' do
       number_of_components = random.rand(1..999)
       union_find = UnionFind::UnionFind.new(number_of_components)
 
