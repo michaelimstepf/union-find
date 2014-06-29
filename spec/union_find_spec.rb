@@ -2,77 +2,118 @@ require 'spec_helper'
 random = Random.new
 
 describe UnionFind::UnionFind do
+  # 1 family and 1 single person
+  people = ['Grandfather', 'Father', 'Mother', 'Son', 'Daughter', 'Single']
 
-  describe '#initialize' do
-    context 'when number_of_components < 0' do
+  describe '#initialize' do    
+    context 'when no components are provided' do
       it 'raises an exception' do
-        expect {UnionFind::UnionFind.new(-2)}.to raise_exception(ArgumentError)
+        expect {UnionFind::UnionFind.new()}.to raise_exception(ArgumentError)
       end            
     end
-    
-    context 'when number_of_components == 0' do
+
+    context 'when components in form other than Array are provided' do
       it 'raises an exception' do
-        expect {UnionFind::UnionFind.new(0)}.to raise_exception(ArgumentError)
+        expect {UnionFind::UnionFind.new('Some Person')}.to raise_exception(ArgumentError)
       end            
-    end   
-  end
-
-  describe '#count_components' do
-    context 'when all components are connected' do
-      number_of_components = random.rand(1..999)
-      union_find = UnionFind::UnionFind.new(number_of_components)
-
-      it 'returns correct count' do
-        expect(union_find.count).to eq number_of_components
-      end
-    end
+    end         
   end
 
   describe '#find_root' do
-    number_of_components = random.rand(1..999)
-    union_find = UnionFind::UnionFind.new(number_of_components)
+    union_find = UnionFind::UnionFind.new(people)
 
-    context 'when component_id < 0' do
+    context 'when component does not exist' do
       it 'raises an exception' do
-        expect {union_find.find_root(-1)}.to raise_exception(IndexError)
+        expect {union_find.find_root('Some Person')}.to raise_exception(IndexError)
       end  
     end
 
-    context 'when component_id > (number_of_components - 1)' do
-      it 'raises an exception' do
-        expect {union_find.find_root(number_of_components)}.to raise_exception(IndexError)
-      end  
-    end
+    context 'when component exists' do
+      context 'when component has no parent' do
+        it 'returns same component' do
+          expect(union_find.find_root('Single')).to eq 'Single'
+        end        
+      end
 
-    context 'when 0 <= component_id < number_of_components' do
-      context 'when component_id is topmost node' do
-        it 'returns same component_id' do
-          component_id = [*1..number_of_components].sample
-          expect(union_find.find_root(component_id)).to eq component_id
+      context 'when component has parent' do
+        create_family_tree(union_find)
+        
+        it 'returns parent' do
+          expect(union_find.find_root('Daughter')).to eq 'Grandfather'
         end        
       end
     end
+  end  
+
+  describe '#connect' do
+    context 'when one component gets connected to itself' do
+      union_find = UnionFind::UnionFind.new(people)      
+      
+      it 'returns the component' do
+        expect(union_find.connect('Grandfather', 'Grandfather')).to be_nil
+      end
+    end
+
+    context 'when one unconnected component gets connected to another unconnected component' do
+      union_find = UnionFind::UnionFind.new(people)            
+      
+      it 'returns the first component' do
+        expect(union_find.connect('Grandfather', 'Father')).to eq 'Grandfather'
+      end
+    end
+
+    context 'when one unconnected component gets connected to a connected component' do
+      union_find = UnionFind::UnionFind.new(people)                  
+      create_family_tree(union_find)
+      
+      it 'connects and returns the root of the larger tree' do
+        expect(union_find.connect('Single', 'Father')).to eq 'Grandfather'
+        expect(union_find.connected?('Father', 'Single')).to be_truthy
+        expect(union_find.find_root('Father')).to eq 'Grandfather'
+        expect(union_find.find_root('Single')).to eq 'Grandfather'                
+      end
+    end         
   end
 
   describe '#connected?' do
-    number_of_components = random.rand(1..999)
-    union_find = UnionFind::UnionFind.new(number_of_components)
+    union_find = UnionFind::UnionFind.new(people)
+    create_family_tree(union_find)
 
     context 'when two components are not connected' do
       it 'returns false' do
-        component_1_id = [*1..number_of_components].sample
-        component_2_id = [*1..number_of_components].sample
-
-        expect(union_find.connected?(component_1_id, component_2_id)).to be_falsey
+        expect(union_find.connected?('Father', 'Single')).to be_falsey
       end
     end
 
     context 'when two components are the same' do
       it 'returns false' do
-        component_1_id = [*1..number_of_components].sample
-
-        expect(union_find.connected?(component_1_id, component_1_id)).to be_truthy
+        expect(union_find.connected?('Father', 'Father')).to be_truthy
       end
-    end    
-  end  
+    end
+
+    context 'when two components are connected' do
+      it 'returns false' do
+        expect(union_find.connected?('Grandfather', 'Daughter')).to be_truthy
+      end
+    end         
+  end
+
+  describe '#count_isolated_components' do
+    context 'when no connections have been made' do
+      union_find = UnionFind::UnionFind.new(people)
+
+      it 'returns number of components' do
+        expect(union_find.count_isolated_components).to eq people.size        
+      end 
+    end
+
+    context 'when connections have been made' do
+      union_find = UnionFind::UnionFind.new(people)
+      create_family_tree(union_find)
+
+      it 'returns number of components' do
+        expect(union_find.count_isolated_components).to eq 2        
+      end
+    end
+  end   
 end  
