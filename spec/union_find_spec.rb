@@ -45,12 +45,12 @@ describe UnionFind::UnionFind do
     end
   end  
 
-  describe '#connect' do
+  describe '#union' do
     context 'when one component gets connected to itself' do
       union_find = UnionFind::UnionFind.new(people)      
       
       it 'returns the component' do
-        expect(union_find.connect('Grandfather', 'Grandfather')).to be_nil
+        expect(union_find.union('Grandfather', 'Grandfather')).to be_nil
       end
     end
 
@@ -58,7 +58,7 @@ describe UnionFind::UnionFind do
       union_find = UnionFind::UnionFind.new(people)            
       
       it 'returns the first component' do
-        expect(union_find.connect('Grandfather', 'Father')).to eq 'Grandfather'
+        expect(union_find.union('Grandfather', 'Father')).to eq 'Grandfather'
       end
     end
 
@@ -67,7 +67,7 @@ describe UnionFind::UnionFind do
       create_family_tree(union_find)
       
       it 'connects and returns the root of the larger tree' do
-        expect(union_find.connect('Single', 'Father')).to eq 'Grandfather'
+        expect(union_find.union('Single', 'Father')).to eq 'Grandfather'
         expect(union_find.connected?('Father', 'Single')).to be_truthy
         expect(union_find.find_root('Father')).to eq 'Grandfather'
         expect(union_find.find_root('Single')).to eq 'Grandfather'                

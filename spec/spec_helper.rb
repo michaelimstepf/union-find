@@ -14,10 +14,10 @@ RSpec.configure do |config|
 end
 
 def create_family_tree(union_find)
-  union_find.connect('Grandfather', 'Father')
-  union_find.connect('Grandfather', 'Mother')
-  union_find.connect('Mother', 'Son')
-  union_find.connect('Father', 'Daughter')
+  union_find.union('Grandfather', 'Father')
+  union_find.union('Grandfather', 'Mother')
+  union_find.union('Mother', 'Son')
+  union_find.union('Father', 'Daughter')
 
   union_find
 end

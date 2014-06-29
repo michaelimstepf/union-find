@@ -1,4 +1,4 @@
-# UnionFind (IN PROGRESS)
+# Weighted quick-union algorithm with path compression
 
 TODO Description
 

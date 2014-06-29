@@ -72,7 +72,7 @@ class UnionFind
   # @param component_1_id [Integer] the integer representing one component
   # @param component_2_id [Integer] the integer representing the other component
   # @return [Component, NilClass] the root of the larger tree or the root of the first component if both have the same tree size or nil if no connection has been made
-  def connect(component_1, component_2)
+  def union(component_1, component_2)
     root_component_1 = find_root(component_1)
     root_component_2 = find_root(component_2)
 
