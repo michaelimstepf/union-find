@@ -1,5 +1,4 @@
 require 'spec_helper'
-random = Random.new
 
 describe UnionFind::UnionFind do
   # 1 family and 1 single person
