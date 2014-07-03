@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe UnionFind::UnionFind do
   # 1 family and 1 single person
-  people = ['Grandfather', 'Father', 'Mother', 'Son', 'Daughter', 'Single']
+  people = Set.new ['Grandfather', 'Father', 'Mother', 'Son', 'Daughter', 'Single']
 
   describe '#initialize' do    
     context 'when no components are provided' do
@@ -18,31 +18,17 @@ describe UnionFind::UnionFind do
     end         
   end
 
-  describe '#find_root' do
-    union_find = UnionFind::UnionFind.new(people)
-
-    context 'when component does not exist' do
-      it 'raises an exception' do
-        expect {union_find.find_root('Some Person')}.to raise_exception(IndexError)
-      end  
-    end
-
-    context 'when component exists' do
-      context 'when component has no parent' do
-        it 'returns same component' do
-          expect(union_find.find_root('Single')).to eq 'Single'
-        end        
+  describe '#add' do
+    union_find = UnionFind::UnionFind.new(people)          
+    
+    context 'when component does not yet exist' do      
+      it 'adds component' do
+        union_find.add('Other Single')        
+        expect(union_find.connected?('Grandfather', 'Other Single')).to be_falsey
+        expect(union_find.count_isolated_components).to eq people.length + 1
       end
-
-      context 'when component has parent' do
-        create_family_tree(union_find)
-        
-        it 'returns parent' do
-          expect(union_find.find_root('Daughter')).to eq 'Grandfather'
-        end        
-      end
-    end
-  end  
+    end    
+  end   
 
   describe '#union' do
     context 'when one component gets connected to itself' do
@@ -67,9 +53,7 @@ describe UnionFind::UnionFind do
       
       it 'connects and returns the root of the larger tree' do
         expect(union_find.union('Single', 'Father')).to eq 'Grandfather'
-        expect(union_find.connected?('Father', 'Single')).to be_truthy
-        expect(union_find.find_root('Father')).to eq 'Grandfather'
-        expect(union_find.find_root('Single')).to eq 'Grandfather'                
+        expect(union_find.connected?('Father', 'Single')).to be_truthy                
       end
     end         
   end
@@ -113,6 +97,15 @@ describe UnionFind::UnionFind do
       it 'returns number of components' do
         expect(union_find.count_isolated_components).to eq 2        
       end
+    end
+
+    context 'when same connections have been made multiple times' do
+      union_find = UnionFind::UnionFind.new(people)
+      2.times { create_family_tree(union_find) }
+
+      it 'returns number of components' do
+        expect(union_find.count_isolated_components).to eq 2        
+      end      
     end
   end   
 end  

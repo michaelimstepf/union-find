@@ -12,7 +12,7 @@ Possible applications where we might want to find out whether two items are conn
 
 Click [here](https://www.cs.princeton.edu/~rs/AlgsDS07/01UnionFind.pdf) for more information.
 
-This a Ruby implementation of [Robert Sedgewick](http://www.cs.princeton.edu/~rs/)'s and [Kevin Wayne](http://www.cs.princeton.edu/~wayne/contact/)'s [weighted quick-union algorithm with path compression](http://algs4.cs.princeton.edu/15uf/UF.java.html). Credit goes to these two authors of the book [Algorithms](http://www.amazon.com/gp/product/032157351X/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&tag=algs4-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=032157351X) and to the many computer scientists that have contributed to this algorithm in the past decades.
+This a Ruby implementation of modified version of [Robert Sedgewick](http://www.cs.princeton.edu/~rs/)'s and [Kevin Wayne](http://www.cs.princeton.edu/~wayne/contact/)'s [weighted quick-union algorithm with path compression](http://algs4.cs.princeton.edu/15uf/UF.java.html). Credit goes to these two authors of the book [Algorithms](http://www.amazon.com/gp/product/032157351X/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&tag=algs4-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=032157351X) and to the many computer scientists that have contributed to this algorithm in the past decades.
 
 ## Installation
 
@@ -34,6 +34,12 @@ Create a new instance of `UnionFind` and pass in an array of items:
 
 ```ruby
 union_find = UnionFind::UnionFind.new(['Grandfather', 'Father', 'Daughter', 'Single Person'])
+```
+
+Add more items on the fly:
+
+```ruby
+union_find.add('Grandmother')
 ```
 
 Connect items (in any order):
@@ -63,9 +69,9 @@ union_find.count_isolated_components
 
 ## Performance
 
-Initializing a data structure takes linear time: θ(n).
+Initializing a data structure takes constant time: θ(1).
 
-Afterwards, the `union()`, `find_root()`, and `connected?()` operations take logarithmic time in the worst case: O(log n).
+Afterwards, the `union()` and `connected?()` operations take logarithmic time in the worst case: O(log n).
 
 The `count_isolated_components()` operation takes constant time: θ(1).
 
