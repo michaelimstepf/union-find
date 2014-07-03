@@ -31,11 +31,16 @@ class UnionFind
   # @param components [Array] components
   # @raise [ArgumentError] if components.length < 1 or if components is not an Array
   def initialize(components)
-    @components = components
+    # Unexpected behaviour,
+    # for Sets the @components does not copy the content of components
+    # rather it points to the components variable and any changes to the components
+    # variables are reflected in @components.
+    # Force copy instead.
+    @components = components.dup
 
     raise ArgumentError, 'input is not a Set' unless @components.is_a? Set   
 
-    @number_of_isolated_components = components.length
+    @number_of_isolated_components = @components.length
 
     raise ArgumentError, 'number of components is < 1' if @number_of_isolated_components < 1         
 

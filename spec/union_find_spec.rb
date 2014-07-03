@@ -18,13 +18,13 @@ describe UnionFind::UnionFind do
     end         
   end
 
-  describe '#add' do    
+  describe '#add' do
+    union_find = UnionFind::UnionFind.new(people)          
+    
     context 'when component does not yet exist' do      
       it 'adds component' do
-        union_find = UnionFind::UnionFind.new(people)                  
         union_find.add('Other Single')        
         expect(union_find.connected?('Grandfather', 'Other Single')).to be_falsey
-        binding.pry
         expect(union_find.count_isolated_components).to eq people.length + 1
       end
     end    
@@ -39,17 +39,19 @@ describe UnionFind::UnionFind do
       end
     end
 
-    context 'when one unconnected component gets connected to another unconnected component' do                       
+    context 'when one unconnected component gets connected to another unconnected component' do
+      union_find = UnionFind::UnionFind.new(people)            
+      
       it 'returns the first component' do
-        union_find = UnionFind::UnionFind.new(people) 
         expect(union_find.union('Grandfather', 'Father')).to eq 'Grandfather'
       end
     end
 
-    context 'when one unconnected component gets connected to a connected component' do      
+    context 'when one unconnected component gets connected to a connected component' do
+      union_find = UnionFind::UnionFind.new(people)                  
+      create_family_tree(union_find)
+      
       it 'connects and returns the root of the larger tree' do
-        union_find = UnionFind::UnionFind.new(people)                  
-        create_family_tree(union_find)        
         expect(union_find.union('Single', 'Father')).to eq 'Grandfather'
         expect(union_find.connected?('Father', 'Single')).to be_truthy                
       end
@@ -57,26 +59,23 @@ describe UnionFind::UnionFind do
   end
 
   describe '#connected?' do
+    union_find = UnionFind::UnionFind.new(people)
+    create_family_tree(union_find)
+
     context 'when two components are not connected' do
       it 'returns false' do
-        union_find = UnionFind::UnionFind.new(people)
-        create_family_tree(union_find)        
         expect(union_find.connected?('Father', 'Single')).to be_falsey
       end
     end
 
     context 'when two components are the same' do
       it 'returns false' do
-        union_find = UnionFind::UnionFind.new(people)
-        create_family_tree(union_find)           
         expect(union_find.connected?('Father', 'Father')).to be_truthy
       end
     end
 
     context 'when two components are connected' do
       it 'returns false' do
-        union_find = UnionFind::UnionFind.new(people)
-        create_family_tree(union_find)           
         expect(union_find.connected?('Grandfather', 'Daughter')).to be_truthy
       end
     end         
@@ -84,24 +83,27 @@ describe UnionFind::UnionFind do
 
   describe '#count_isolated_components' do
     context 'when no connections have been made' do
+      union_find = UnionFind::UnionFind.new(people)
+
       it 'returns number of components' do
-        union_find = UnionFind::UnionFind.new(people)        
         expect(union_find.count_isolated_components).to eq people.size        
       end 
     end
 
     context 'when connections have been made' do
+      union_find = UnionFind::UnionFind.new(people)
+      create_family_tree(union_find)
+
       it 'returns number of components' do
-        union_find = UnionFind::UnionFind.new(people)
-        create_family_tree(union_find)        
         expect(union_find.count_isolated_components).to eq 2        
       end
     end
 
     context 'when same connections have been made multiple times' do
+      union_find = UnionFind::UnionFind.new(people)
+      2.times { create_family_tree(union_find) }
+
       it 'returns number of components' do
-        union_find = UnionFind::UnionFind.new(people)
-        2.times { create_family_tree(union_find) }        
         expect(union_find.count_isolated_components).to eq 2        
       end      
     end
