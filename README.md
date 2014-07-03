@@ -45,6 +45,7 @@ union_find.add('Grandmother')
 Connect items (in any order):
 
 ```ruby
+union_find.union('Grandfather', 'Grandmother')
 union_find.union('Grandfather', 'Father')
 union_find.union('Father', 'Daughter')
 ```
@@ -60,7 +61,7 @@ union_find.connected?('Grandfather', 'Single Person')
 => false
 ```
 
-Check how many isolated items there are. In this example, there are 2, namely the family the family tree (Grandfather - Father - Daugther) and the Single Person:
+Check how many isolated items there are. In this example, there are 2, namely the family (Grandfather - Grandmother - Father - Daugther) and the Single Person:
 
 ```ruby
 union_find.count_isolated_components
