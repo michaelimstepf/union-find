@@ -24,23 +24,31 @@ module UnionFind
 # @see http://algs4.cs.princeton.edu/15uf/
 class UnionFind
 
+  attr_accessor :components
+
   # Initializes an empty union-find data structure with
   # n isolated components 0 through n-1.
   # @param components [Array] components
   # @raise [ArgumentError] if components.length < 1 or if components is not an Array
   def initialize(components)
-    raise ArgumentError, 'input is not an Array' unless components.class == Array   
+    @components = components
 
-    components = components.uniq # remove duplicates
+    raise ArgumentError, 'input is not a Set' unless @components.is_a? Set   
+
     @number_of_isolated_components = components.length
-    
+
     raise ArgumentError, 'number of components is < 1' if @number_of_isolated_components < 1         
 
-    @parent = {} # parent of i
-    @tree_size = {} # size of tree rooted at i (cannot be more than 31)
-    components.each do |component|
-      @parent[component] = component
-      @tree_size[component] = 1
+    @parent = {} # parent of component
+    @tree_size = {} # size of tree rooted at component (cannot be more than 31)
+  end
+
+  # Dynamically adds component.
+  # @return [Component] component
+  def add(component)
+    if @components.add?(component)
+      # if component does not already exist
+      @number_of_isolated_components += 1
     end
   end
 
@@ -50,32 +58,18 @@ class UnionFind
     @number_of_isolated_components
   end
 
-  # Returns the root of a component.
-  # @param component_id [Integer] the integer representing one component
-  # @return [Component] the root of the component
-  # @raise [IndexError] unless component exists
-  def find_root(component)
-    raise IndexError, 'component does not exist' unless @parent[component]
-    
-    while component != @parent[component] # stop at the top node where component id == parent id
-      @parent[component] = @parent[@parent[component]] # path compression by halving
-      component = @parent[component]
-    end
-
-    return component
-  end
-
   # Connect root of component 1 with root of component 2
   # by attaching smaller subtree root node with larger tree.
   # If both trees have the same size, the root of the second
   # component becomes a child of the root of the first component.
-  # @param component_1_id [Integer] the integer representing one component
-  # @param component_2_id [Integer] the integer representing the other component
+  # @param component_1 [Component] component
+  # @param component_2 [Component] component
   # @return [Component, NilClass] the root of the larger tree or the root of the first component if both have the same tree size or nil if no connection has been made
   def union(component_1, component_2)
     root_component_1 = find_root(component_1)
     root_component_2 = find_root(component_2)
 
+    # exit if already connected
     return nil if root_component_1 == root_component_2
 
     # make smaller root point to larger one
@@ -95,12 +89,42 @@ class UnionFind
   end  
 
   # Do two components share the same root?
-  # @param component_1 [Integer] the integer representing one component
-  # @param component_2 [Integer] the integer representing the other component     
+  # @param component_1 [Component] component
+  # @param component_2 [Component] component  
   # @return [Boolean]
   def connected?(component_1, component_2)
     find_root(component_1) == find_root(component_2)
   end
+
+  private
+
+  # Returns the root of a component.
+  # @param component [Component] component
+  # @return [Component] the root of the component
+  # @raise [IndexError] unless component exists
+  def find_root(component)
+    raise IndexError, 'component does not exist' unless @components.include? component
+    
+    set_parent_and_tree_size(component)
+
+    while component != @parent[component] # stop at the top node where component id == parent id
+      @parent[component] = @parent[@parent[component]] # path compression by halving
+      component = @parent[component]
+    end
+
+    return component
+  end
+
+  # Sets parent and tree size for each component.
+  # To prevent initialize method from taking linear time,
+  # this method is used to do this assignment on demand.
+  # @param component [Component] component
+  # @return [Component] component
+  def set_parent_and_tree_size(component)    
+    @parent[component] ||= component
+    @tree_size[component] ||= 1
+    component
+  end  
 end
 
 end
