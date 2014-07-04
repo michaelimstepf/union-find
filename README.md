@@ -30,10 +30,20 @@ Or install it yourself as:
 
 ## Usage
 
-Create a new instance of `UnionFind` and pass in an array of items:
+Create a new instance of `UnionFind` and pass in a `Set` of items:
 
 ```ruby
-union_find = UnionFind::UnionFind.new(['Grandfather', 'Father', 'Daughter', 'Single Person'])
+require 'set'
+people = Set.new ['Grandfather', 'Father', 'Daughter', 'Single Person']
+union_find = UnionFind::UnionFind.new(people)
+```
+
+A `Set` is used instead of an `Array` because `Sets` filter out duplicate entries without having to call an expensive `#uniq!` method. If your data comes in form of an `Array`, you can convert it to a `Set` like so:
+
+```ruby
+require 'set'
+array = ['Grandfather', 'Father', 'Daughter', 'Single Person']
+set = array.to_set
 ```
 
 Add more items on the fly:
