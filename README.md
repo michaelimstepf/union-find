@@ -34,6 +34,8 @@ Create a new instance of `UnionFind` and pass in a `Set` of items:
 
 ```ruby
 require 'set'
+require 'union_find' # if not automatically loaded
+
 people = Set.new ['Grandfather', 'Father', 'Daughter', 'Single Person']
 union_find = UnionFind::UnionFind.new(people)
 ```
